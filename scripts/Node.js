@@ -4,5 +4,7 @@ export default class Node {
     this.isWord = false;
     this.children = {};
     this.value = letter;
+    this.frequency = 0;
+    this.lastTouched = 0;
   }
 }

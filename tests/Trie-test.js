@@ -71,6 +71,129 @@ describe('Trie functionality', () => {
       ).to.equal(true)
     })
 
+    it('should be able to insert multiple words correctly', () => {
+      completeMe.insert('apples');
+      completeMe.insert('apple');
+      completeMe.insert('applecandy');
+      completeMe.insert('applesauce');
+      completeMe.insert('ape');
+      completeMe.insert('app');
+      completeMe.insert('apps');
+      completeMe.insert('aligator');
+      completeMe.insert('alf');
+      completeMe.insert('bubbles');
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .children.l
+        .children.e
+        .children.s
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .children.l
+        .children.e
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .children.l
+        .children.e
+        .children.c
+        .children.a
+        .children.n
+        .children.d
+        .children.y
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .children.l
+        .children.e
+        .children.s
+        .children.a
+        .children.u
+        .children.c
+        .children.e
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.e
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.p
+        .children.p
+        .children.s
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.l
+        .children.i
+        .children.g
+        .children.a
+        .children.t
+        .children.o
+        .children.r
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.a
+        .children.l
+        .children.f
+        .isWord
+      ).to.equal(true);
+
+      expect(
+        completeMe.root
+        .children.b
+        .children.u
+        .children.b
+        .children.b
+        .children.l
+        .children.e
+        .children.s
+        .isWord
+      ).to.equal(true);
+
+    })
+
     it('should be able to insert multiple words and children objects should have multiple props', () => {
       completeMe.insert('apple');
       completeMe.insert('ape');
@@ -178,7 +301,7 @@ describe('Trie functionality', () => {
 
 
     beforeEach( function () {
-      this.timeout(2400);
+      this.timeout(3000);
       completeMe = new Trie();
       completeMe.populate(dictionary);
     });
@@ -197,25 +320,42 @@ describe('Trie functionality', () => {
       completeMe = new Trie();
     })
 
-    it.skip('should be able to select order of words returned by suggest', () => {
-      completeMe.insert('app')
-      completeMe.insert('apple')
-      completeMe.insert('applesauce')
-      completeMe.insert('apply')
+    it.skip('should increase frequency when selected', () => {
 
-      let suggestions = completeMe.suggest('app');
-
-      expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
-
-      completeMe.select('ape');
-      expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
-
-      completeMe.select('apply');
-      expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
-
-      completeMe.select('apple');
-      expect(suggestions).to.deep.equal([ 'apple', 'apply', 'app', 'applesauce' ])
     })
+
+    it('should be able to select order of words returned by suggest', () => {
+        completeMe.insert('app')
+        completeMe.insert('apple')
+        completeMe.insert('applesauce')
+        completeMe.insert('apply')
+
+        let suggestions = completeMe.suggest('app');
+
+        expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
+
+        completeMe.select('app');
+        suggestions = completeMe.suggest('app');
+        expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
+
+        completeMe.select('apply');
+        suggestions = completeMe.suggest('app');
+        expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
+
+        completeMe.select('apple');
+        suggestions = completeMe.suggest('app');
+        expect(suggestions).to.deep.equal([ 'apple', 'apply', 'app', 'applesauce' ])
+
+        completeMe.select('app');
+        suggestions = completeMe.suggest('app');
+        expect(suggestions).to.deep.equal([ 'app', 'apple', 'apply', 'applesauce' ])
+
+        completeMe.select('apply');
+        completeMe.select('app');
+        completeMe.select('apply');
+        suggestions = completeMe.suggest('app');
+        expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
+      })
   })
 
 })
