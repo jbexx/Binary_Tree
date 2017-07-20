@@ -30,12 +30,12 @@ export default class Trie {
       currentNode.value = data;
     }
 
-  };
+  }
 
   count() {
 
     return this.wordCount;
-  };
+  }
 
   suggest(words) {
     let wordsArray = [...words]
@@ -52,15 +52,20 @@ export default class Trie {
       for (let j = 0; j < keys.length; j++) {
         const child = currentNode.children[keys[j]];
         const newString = words + child.letter;
+
         if (child.isWord) {
-          suggestions.push({name: newString, frequency: child.frequency, lastTouched: child.lastTouched});
+          suggestions.push({name: newString,
+            frequency: child.frequency,
+            lastTouched: child.lastTouched});
         }
         traverseTrie(newString, child);
       }
     };
 
     if (currentNode && currentNode.isWord) {
-      suggestions.push({name: words, frequency: currentNode.frequency, lastTouched: currentNode.lastTouched})
+      suggestions.push({name: words,
+        frequency: currentNode.frequency,
+        lastTouched: currentNode.lastTouched})
     }
 
     if (currentNode) {
@@ -70,7 +75,7 @@ export default class Trie {
     suggestions.sort((a, b) => b.frequency - a.frequency || b.lastTouched - a.lastTouched)
 
     return suggestions.map(obj => obj.name);
-  };
+  }
 
   select(word) {
     let wordsArray = [...word];
@@ -81,11 +86,11 @@ export default class Trie {
     }
     currentNode.frequency++
     currentNode.lastTouched = Date.now();
-  };
+  }
 
   populate(dictionary) {
     dictionary.forEach(word => {
       this.insert(word);
     })
-  };
+  }
 }

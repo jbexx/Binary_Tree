@@ -89,8 +89,8 @@ const prepend = () => {
 console.log(suggestions);
   $(listItems).remove();
 
-  for (var i = 0; i < 15 && suggestions.length - 1; i++) {
-    if (string !== '' && suggestions[i] !== undefined) {
+  for (let i = 0; i < 15 && suggestions.length; i++) {
+    if (suggestions[i] !== undefined) {
       $('#addSuggestions').append(`
         <button id="sug-btn">${suggestions[i]}</button>
         `)
@@ -99,7 +99,7 @@ console.log(suggestions);
 };
 
 const selectWord = (e) => {
-  let selected = e.target.innerHTML;
+  const selected = e.target.innerHTML;
   console.log(selected);
 
   Tree.select(selected);

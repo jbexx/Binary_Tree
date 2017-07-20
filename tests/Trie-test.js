@@ -197,7 +197,7 @@ describe('Trie functionality', () => {
 
     })
 
-    it('should be able to insert multiple words and children objects should have multiple props', () => {
+    it('should be able to insert multiple words and children objects should have multiple properties', () => {
       completeMe.insert('apple');
       completeMe.insert('ape');
 
@@ -212,7 +212,7 @@ describe('Trie functionality', () => {
 
     })
 
-    it('should have nodes which represent incomplete words where the isWord prop is false', () => {
+    it('should have nodes which represent incomplete words where the isWord property is false', () => {
       completeMe.insert('apple');
 
       expect(
@@ -249,16 +249,6 @@ describe('Trie functionality', () => {
       completeMe.insert('apples');
       expect(completeMe.count()).to.equal(4);
     })
-
-    it('should return number of words inserted', () => {
-      expect(completeMe.count()).to.equal(0);
-
-      completeMe.insert('ape');
-      expect(completeMe.count()).to.equal(1);
-
-      completeMe.insert('ape');
-      expect(completeMe.count()).to.equal(1);
-    })
   });
 
   describe('Suggest', () => {
@@ -266,6 +256,7 @@ describe('Trie functionality', () => {
 
     beforeEach( () => {
       completeMe = new Trie();
+
       completeMe.insert('app');
       completeMe.insert('apple');
       completeMe.insert('applesauce');
@@ -302,7 +293,6 @@ describe('Trie functionality', () => {
   describe('populate', () => {
     let completeMe;
 
-
     beforeEach( function () {
       this.timeout(3000);
       completeMe = new Trie();
@@ -320,8 +310,8 @@ describe('Trie functionality', () => {
     let completeMe;
 
     const sleep = (milliseconds) => {
-      var start = new Date().getTime();
-      for (var i = 0; i < 1e7; i++) {
+      const start = new Date().getTime();
+      for (let i = 0; i < 1e7; i++) {
         if ((new Date().getTime() - start) > milliseconds){
           break;
         }
@@ -332,49 +322,44 @@ describe('Trie functionality', () => {
       completeMe = new Trie();
     })
 
-    it.skip('should increase frequency when selected', () => {
-
-    })
-
     it('should be able to select order of words returned by suggest', () => {
-        completeMe.insert('app')
-        completeMe.insert('apple')
-        completeMe.insert('applesauce')
-        completeMe.insert('apply')
+      completeMe.insert('app')
+      completeMe.insert('apple')
+      completeMe.insert('applesauce')
+      completeMe.insert('apply')
 
-        let suggestions = completeMe.suggest('app');
+      let suggestions = completeMe.suggest('app');
 
-        expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
+      expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
 
-        completeMe.select('app');
-        suggestions = completeMe.suggest('app');
-        expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
-        sleep(10);
+      completeMe.select('app');
+      suggestions = completeMe.suggest('app');
+      expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
+      sleep(10);
 
-        completeMe.select('apply');
-        suggestions = completeMe.suggest('app');
-        expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
-        sleep(10);
+      completeMe.select('apply');
+      suggestions = completeMe.suggest('app');
+      expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
+      sleep(10);
 
-        completeMe.select('apple');
-        suggestions = completeMe.suggest('app');
-        expect(suggestions).to.deep.equal([ 'apple', 'apply', 'app', 'applesauce' ])
-        sleep(10);
+      completeMe.select('apple');
+      suggestions = completeMe.suggest('app');
+      expect(suggestions).to.deep.equal([ 'apple', 'apply', 'app', 'applesauce' ])
+      sleep(10);
 
-        completeMe.select('app');
-        suggestions = completeMe.suggest('app');
-        expect(suggestions).to.deep.equal([ 'app', 'apple', 'apply', 'applesauce' ])
-        sleep(10);
+      completeMe.select('app');
+      suggestions = completeMe.suggest('app');
+      expect(suggestions).to.deep.equal([ 'app', 'apple', 'apply', 'applesauce' ])
+      sleep(10);
 
-        completeMe.select('apply');
-        sleep(10);
-        completeMe.select('app');
-        sleep(10);
-        completeMe.select('apply');
-        sleep(10);
-        suggestions = completeMe.suggest('app');
-        expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
-      })
+      completeMe.select('apply');
+      sleep(10);
+      completeMe.select('app');
+      sleep(10);
+      completeMe.select('apply');
+      sleep(10);
+      suggestions = completeMe.suggest('app');
+      expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
+    })
   })
-
 })

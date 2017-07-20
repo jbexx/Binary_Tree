@@ -4,7 +4,7 @@ import dictionary from './words.json';
 const Tree = new Trie();
 
 $(document).ready( () => {
-   Tree.populate(dictionary);
+  Tree.populate(dictionary);
 })
 
 const prepend = () => {
@@ -15,7 +15,7 @@ const prepend = () => {
 console.log(suggestions);
   $(listItems).remove();
 
-  for (var i = 0; i < 15 && suggestions.length - 1; i++) {
+  for (let i = 0; i < 15 && suggestions.length; i++) {
     if (string !== '' && suggestions[i] !== undefined) {
       $('#addSuggestions').append(`
         <button id="sug-btn">${suggestions[i]}</button>
@@ -25,7 +25,8 @@ console.log(suggestions);
 };
 
 const selectWord = (e) => {
-  let selected = e.target.innerHTML;
+  const selected = e.target.innerHTML;
+  
   console.log(selected);
 
   Tree.select(selected);
