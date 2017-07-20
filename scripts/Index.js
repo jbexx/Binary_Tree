@@ -7,11 +7,11 @@ $(document).ready( () => {
   Tree.populate(dictionary);
 })
 
-const prepend = () => {
+const append = () => {
   const listItems = $('button');
 
   const string = $('#search').val();
-  
+
   const suggestions = Tree.suggest(string);
 
   $(listItems).remove();
@@ -29,11 +29,11 @@ const selectWord = (e) => {
   const selected = e.target.innerHTML;
 
   Tree.select(selected);
-  prepend();
+  append();
 }
 
 $('#search').on('keyup', function() {
-  prepend();
+  append();
 })
 
 $('#addSuggestions').on('click', '#sug-btn', function(e) {
