@@ -1,8 +1,11 @@
 import { expect } from 'chai';
 import Trie from '../scripts/Trie'
 import Node from '../scripts/Node'
-const fs = require ('fs')
-const text = "/usr/share/dict/words"
+
+const fs = require ('fs');
+
+const text = "/usr/share/dict/words";
+
 let dictionary = fs.readFileSync(text).toString().trim().split('\n');
 
 describe('Trie functionality', () => {
@@ -316,6 +319,15 @@ describe('Trie functionality', () => {
   describe('select', () => {
     let completeMe;
 
+    const sleep = (milliseconds) => {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
+    }
+
     beforeEach(function () {
       completeMe = new Trie();
     })
@@ -337,22 +349,29 @@ describe('Trie functionality', () => {
         completeMe.select('app');
         suggestions = completeMe.suggest('app');
         expect(suggestions).to.deep.equal([ 'app', 'apple', 'applesauce', 'apply' ])
+        sleep(10);
 
         completeMe.select('apply');
         suggestions = completeMe.suggest('app');
         expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
+        sleep(10);
 
         completeMe.select('apple');
         suggestions = completeMe.suggest('app');
         expect(suggestions).to.deep.equal([ 'apple', 'apply', 'app', 'applesauce' ])
+        sleep(10);
 
         completeMe.select('app');
         suggestions = completeMe.suggest('app');
         expect(suggestions).to.deep.equal([ 'app', 'apple', 'apply', 'applesauce' ])
+        sleep(10);
 
         completeMe.select('apply');
+        sleep(10);
         completeMe.select('app');
+        sleep(10);
         completeMe.select('apply');
+        sleep(10);
         suggestions = completeMe.suggest('app');
         expect(suggestions).to.deep.equal([ 'apply', 'app', 'apple', 'applesauce' ])
       })

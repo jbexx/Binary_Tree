@@ -69,13 +69,10 @@ export default class Trie {
 
     suggestions.sort((a, b) => b.frequency - a.frequency || b.lastTouched - a.lastTouched)
 
-    // let t = performance.now()
-    // console.log(parseInt(performance.now());
     return suggestions.map(obj => obj.name);
   };
 
   select(word) {
-
     let wordsArray = [...word];
     let currentNode = this.root;
 
@@ -84,14 +81,6 @@ export default class Trie {
     }
     currentNode.frequency++
     currentNode.lastTouched = Date.now();
-
-    // we want to suggest a word that has been selected in the past
-    // we need to add a counter of some sort to know if the user has selected that word before
-    // if the user has selected that word before then we put that word first in the suggestion box
-    // we return an array called suggestions in our suggest function
-    // in that array we need to place the word/s that have a count of being selected before from highest to lowest, highest being at [0] in the array
-    //we need to store those words somehow to reference them later.  Is that done in a seperate object or on the nodes themselves somehow
-    // return array of suggestions;
   };
 
   populate(dictionary) {

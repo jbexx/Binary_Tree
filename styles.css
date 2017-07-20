@@ -40,12 +40,20 @@ button {
   border: none;
   color: rgba(0, 0, 0, 0.8);
   font-size: 1.4em;
-  height: 40px;
-  margin: 20px;
+  height: 30px;
+  margin: 15px;
   transition: 0.5s;
-  width: 35%;
+  width: 25%;
 }
 
 button:hover {
   background-color: rgba(64, 96, 92, 0.7);
+}
+
+#addSuggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 85%;
 }
