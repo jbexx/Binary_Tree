@@ -13,7 +13,7 @@ describe('Trie functionality', () => {
   describe('insert', () => {
     let completeMe;
 
-    beforeEach(function () {
+    beforeEach( () => {
       completeMe = new Trie();
     })
 
@@ -318,7 +318,7 @@ describe('Trie functionality', () => {
       }
     }
 
-    beforeEach(function () {
+    beforeEach( () => {
       completeMe = new Trie();
     })
 

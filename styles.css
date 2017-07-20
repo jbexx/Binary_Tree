@@ -50,6 +50,11 @@ button:hover {
   background-color: rgba(64, 96, 92, 0.7);
 }
 
+h2 {
+  font-size: 3em;
+  color: rgba(17, 16, 16, 0.9);
+}
+
 #addSuggestions {
   display: flex;
   flex-wrap: wrap;

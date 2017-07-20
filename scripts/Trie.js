@@ -6,16 +6,16 @@ export default class Trie {
     this.wordCount = 0;
   }
 
-  insert(data) {
+  insert(prefix) {
     const node = new Node();
 
     if (!this.root) {
       this.root = node;
     }
 
-    const letters = [...data.toLowerCase()];
-
     let currentNode = this.root;
+
+    const letters = [...prefix.toLowerCase()];
 
     letters.forEach( letter => {
       if (!currentNode.children[letter]) {
@@ -27,7 +27,7 @@ export default class Trie {
     if (!currentNode.isWord) {
       currentNode.isWord = true;
       this.wordCount++;
-      currentNode.value = data;
+      currentNode.value = prefix;
     }
 
   }
@@ -37,60 +37,63 @@ export default class Trie {
     return this.wordCount;
   }
 
-  suggest(words) {
-    let wordsArray = [...words]
+  suggest(prefix) {
+    const wordsArray = [...prefix];
+
+    const suggestions = [];
+
     let currentNode = this.root;
-    let suggestions = [];
 
     for (let i = 0; i < wordsArray.length; i++) {
       currentNode = currentNode.children[wordsArray[i]]
     }
 
-    const traverseTrie = (words, currentNode) => {
+    const traverseTrie = (prefix, currentNode) => {
       const keys = Object.keys(currentNode.children);
 
       for (let j = 0; j < keys.length; j++) {
         const child = currentNode.children[keys[j]];
-        const newString = words + child.letter;
+
+        const newString = prefix + child.letter;
 
         if (child.isWord) {
           suggestions.push({name: newString,
             frequency: child.frequency,
-            lastTouched: child.lastTouched});
+            timeStamp: child.timeStamp});
         }
         traverseTrie(newString, child);
       }
     };
 
     if (currentNode && currentNode.isWord) {
-      suggestions.push({name: words,
+      suggestions.push({name: prefix,
         frequency: currentNode.frequency,
-        lastTouched: currentNode.lastTouched})
+        timeStamp: currentNode.timeStamp})
     }
 
     if (currentNode) {
-      traverseTrie(words, currentNode)
+      traverseTrie(prefix, currentNode)
     }
 
-    suggestions.sort((a, b) => b.frequency - a.frequency || b.lastTouched - a.lastTouched)
+    suggestions.sort((a, b) => b.frequency - a.frequency || b.timeStamp - a.timeStamp)
 
     return suggestions.map(obj => obj.name);
   }
 
-  select(word) {
-    let wordsArray = [...word];
+  select(prefix) {
+    const wordsArray = [...prefix];
     let currentNode = this.root;
 
     for (let i = 0; i < wordsArray.length; i++) {
       currentNode = currentNode.children[wordsArray[i]]
     }
     currentNode.frequency++
-    currentNode.lastTouched = Date.now();
+    currentNode.timeStamp = Date.now();
   }
 
   populate(dictionary) {
-    dictionary.forEach(word => {
-      this.insert(word);
+    dictionary.forEach(prefix => {
+      this.insert(prefix);
     })
   }
 }

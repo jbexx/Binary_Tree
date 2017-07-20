@@ -5,6 +5,6 @@ export default class Node {
     this.children = {};
     this.value = letter;
     this.frequency = 0;
-    this.lastTouched = 0;
+    this.timeStamp = 0;
   }
 }

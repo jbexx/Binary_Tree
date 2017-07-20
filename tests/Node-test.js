@@ -8,7 +8,7 @@ describe ('Node functionality', () => {
     node = new Node();
   })
 
-  it('should be a thing', () => {
+  it('should exist', () => {
     expect(node).to.exist
   })
 

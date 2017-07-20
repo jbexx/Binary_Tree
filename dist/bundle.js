@@ -78,19 +78,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const Tree = new __WEBPACK_IMPORTED_MODULE_0__Trie__["a" /* default */]();
 
 $(document).ready( () => {
-   Tree.populate(__WEBPACK_IMPORTED_MODULE_1__words_json___default.a);
+  Tree.populate(__WEBPACK_IMPORTED_MODULE_1__words_json___default.a);
 })
 
 const prepend = () => {
   const listItems = $('button');
+
   const string = $('#search').val();
+  
   const suggestions = Tree.suggest(string);
 
-console.log(suggestions);
   $(listItems).remove();
 
   for (let i = 0; i < 15 && suggestions.length; i++) {
-    if (suggestions[i] !== undefined) {
+    if (string !== '' && suggestions[i] !== undefined) {
       $('#addSuggestions').append(`
         <button id="sug-btn">${suggestions[i]}</button>
         `)
@@ -100,7 +101,6 @@ console.log(suggestions);
 
 const selectWord = (e) => {
   const selected = e.target.innerHTML;
-  console.log(selected);
 
   Tree.select(selected);
   prepend();
@@ -129,16 +129,16 @@ class Trie {
     this.wordCount = 0;
   }
 
-  insert(data) {
+  insert(prefix) {
     const node = new __WEBPACK_IMPORTED_MODULE_0__Node__["a" /* default */]();
 
     if (!this.root) {
       this.root = node;
     }
 
-    const letters = [...data.toLowerCase()];
-
     let currentNode = this.root;
+
+    const letters = [...prefix.toLowerCase()];
 
     letters.forEach( letter => {
       if (!currentNode.children[letter]) {
@@ -150,67 +150,75 @@ class Trie {
     if (!currentNode.isWord) {
       currentNode.isWord = true;
       this.wordCount++;
-      currentNode.value = data;
+      currentNode.value = prefix;
     }
 
-  };
+  }
 
   count() {
 
     return this.wordCount;
-  };
+  }
 
-  suggest(words) {
-    let wordsArray = [...words]
+  suggest(prefix) {
+    const wordsArray = [...prefix];
+
+    const suggestions = [];
+
     let currentNode = this.root;
-    let suggestions = [];
 
     for (let i = 0; i < wordsArray.length; i++) {
       currentNode = currentNode.children[wordsArray[i]]
     }
 
-    const traverseTrie = (words, currentNode) => {
+    const traverseTrie = (prefix, currentNode) => {
       const keys = Object.keys(currentNode.children);
 
       for (let j = 0; j < keys.length; j++) {
         const child = currentNode.children[keys[j]];
-        const newString = words + child.letter;
+
+        const newString = prefix + child.letter;
+
         if (child.isWord) {
-          suggestions.push({name: newString, frequency: child.frequency, lastTouched: child.lastTouched});
+          suggestions.push({name: newString,
+            frequency: child.frequency,
+            timeStamp: child.timeStamp});
         }
         traverseTrie(newString, child);
       }
     };
 
     if (currentNode && currentNode.isWord) {
-      suggestions.push({name: words, frequency: currentNode.frequency, lastTouched: currentNode.lastTouched})
+      suggestions.push({name: prefix,
+        frequency: currentNode.frequency,
+        timeStamp: currentNode.timeStamp})
     }
 
     if (currentNode) {
-      traverseTrie(words, currentNode)
+      traverseTrie(prefix, currentNode)
     }
 
-    suggestions.sort((a, b) => b.frequency - a.frequency || b.lastTouched - a.lastTouched)
+    suggestions.sort((a, b) => b.frequency - a.frequency || b.timeStamp - a.timeStamp)
 
     return suggestions.map(obj => obj.name);
-  };
+  }
 
-  select(word) {
-    let wordsArray = [...word];
+  select(prefix) {
+    const wordsArray = [...prefix];
     let currentNode = this.root;
 
     for (let i = 0; i < wordsArray.length; i++) {
       currentNode = currentNode.children[wordsArray[i]]
     }
     currentNode.frequency++
-    currentNode.lastTouched = Date.now();
-  };
+    currentNode.timeStamp = Date.now();
+  }
 
   populate(dictionary) {
-    dictionary.forEach(word => {
-      this.insert(word);
+    dictionary.forEach(prefix => {
+      this.insert(prefix);
     })
-  };
+  }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Trie;
 
@@ -228,7 +236,7 @@ class Node {
     this.children = {};
     this.value = letter;
     this.frequency = 0;
-    this.lastTouched = 0;
+    this.timeStamp = 0;
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Node;
